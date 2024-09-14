@@ -1,5 +1,6 @@
 package com.juandlr.springsecurityproject.service.implementation;
 
+import com.juandlr.springsecurityproject.dto.LoginRequestDto;
 import com.juandlr.springsecurityproject.dto.SignUpRequestDto;
 import com.juandlr.springsecurityproject.entity.ApplicationUser;
 import com.juandlr.springsecurityproject.exception.UserAlreadyExistsException;
@@ -8,6 +9,9 @@ import com.juandlr.springsecurityproject.repository.ApplicationUserRepository;
 import com.juandlr.springsecurityproject.service.ApplicationUserService;
 import com.juandlr.springsecurityproject.service.RoleService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +27,8 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
 
     private final RoleService roleService;
 
+    private final AuthenticationManager authenticationManager;
+
     @Override
     public void singUpUser(SignUpRequestDto signUpRequestDto) {
         String hashedPassword = passwordEncoder.encode(signUpRequestDto.password());
@@ -34,4 +40,13 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
         userToPersist.setRole(roleService.generateDefaultRoleName("ROLE_USER"));
         userRepository.save(userToPersist);
     }
+
+    @Override
+    public String loginUser(LoginRequestDto loginRequestDto) {
+        String jwt = "";
+        Authentication authentication = UsernamePasswordAuthenticationToken.unauthenticated(loginRequestDto.userName(), loginRequestDto.password());
+        return null;
+    }
+
+
 }

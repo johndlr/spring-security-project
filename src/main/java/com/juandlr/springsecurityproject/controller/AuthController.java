@@ -1,5 +1,8 @@
 package com.juandlr.springsecurityproject.controller;
 
+import com.juandlr.springsecurityproject.constants.HttpConstants;
+import com.juandlr.springsecurityproject.dto.LoginRequestDto;
+import com.juandlr.springsecurityproject.dto.ResponseDto;
 import com.juandlr.springsecurityproject.dto.SignUpRequestDto;
 import com.juandlr.springsecurityproject.service.ApplicationUserService;
 import jakarta.validation.Valid;
@@ -22,8 +25,16 @@ public class AuthController {
     private final ApplicationUserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(@RequestBody @Valid SignUpRequestDto signUpRequestDto){
+    public ResponseEntity<ResponseDto> signUp(@RequestBody @Valid SignUpRequestDto signUpRequestDto){
         userService.singUpUser(signUpRequestDto);
-        return ResponseEntity.status(HttpStatus.OK).body("User registration was successful");
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseDto(HttpConstants.STATUS_201, HttpConstants.MESSAGE_201));
     }
+
+    public ResponseEntity<ResponseDto> login(@RequestBody @Valid LoginRequestDto loginRequestDto){
+        userService.loginUser(loginRequestDto);
+
+    }
+
 }
