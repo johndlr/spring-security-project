@@ -1,6 +1,7 @@
 package com.juandlr.springsecurityproject.security;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     private final UserDetailsService userDetailsService;
@@ -25,11 +26,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String userName = authentication.getName();
         String password = authentication.getCredentials().toString();
         UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
-        if (userDetails == null){
-            throw new UsernameNotFoundException("The user with the given username:" + userName + " does not exists");
-        }
         if (passwordEncoder.matches(password, userDetails.getPassword())){
-            return new UsernamePasswordAuthenticationToken(userDetails,userDetails.getPassword(),userDetails.getAuthorities());
+            return new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
         }else{
             throw new BadCredentialsException("Invalid password");
         }
@@ -37,6 +35,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));
+        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
     }
 }

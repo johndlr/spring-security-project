@@ -2,23 +2,29 @@ package com.juandlr.springsecurityproject.service.implementation;
 
 import com.juandlr.springsecurityproject.dto.LoginRequestDto;
 import com.juandlr.springsecurityproject.dto.SignUpRequestDto;
+import com.juandlr.springsecurityproject.dto.UserDto;
 import com.juandlr.springsecurityproject.entity.ApplicationUser;
 import com.juandlr.springsecurityproject.exception.UserAlreadyExistsException;
+import com.juandlr.springsecurityproject.exception.UserNotFoundException;
 import com.juandlr.springsecurityproject.mapper.SingUpMapper;
+import com.juandlr.springsecurityproject.mapper.UserMapper;
 import com.juandlr.springsecurityproject.repository.ApplicationUserRepository;
 import com.juandlr.springsecurityproject.service.ApplicationUserService;
 import com.juandlr.springsecurityproject.service.RoleService;
-import lombok.AllArgsConstructor;
+import com.juandlr.springsecurityproject.service.jwt.JwtService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ApplicationUserServiceImpl implements ApplicationUserService {
 
     private final ApplicationUserRepository userRepository;
@@ -28,6 +34,8 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
     private final RoleService roleService;
 
     private final AuthenticationManager authenticationManager;
+
+    private final JwtService jwtService;
 
     @Override
     public void singUpUser(SignUpRequestDto signUpRequestDto) {
@@ -43,9 +51,21 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
 
     @Override
     public String loginUser(LoginRequestDto loginRequestDto) {
-        String jwt = "";
-        Authentication authentication = UsernamePasswordAuthenticationToken.unauthenticated(loginRequestDto.userName(), loginRequestDto.password());
-        return null;
+        Authentication authentication = UsernamePasswordAuthenticationToken
+                .unauthenticated(loginRequestDto.userName(), loginRequestDto.password());
+        Authentication authenticationResponse = authenticationManager.authenticate(authentication);
+        if (!(authenticationResponse.isAuthenticated())){
+            throw new BadCredentialsException("Invalid credentials");
+        }
+        SecurityContextHolder.getContext().setAuthentication(authenticationResponse);
+        return jwtService.jwtTokenGenerator(authenticationResponse);
+    }
+
+    @Override
+    public UserDto fetchUserInformation(String userName) {
+        ApplicationUser userFromDB = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new UserNotFoundException("The user with the given username: " + userName + " does not exists"));
+        return UserMapper.mapToUserDto(new UserDto(), userFromDB);
     }
 
 

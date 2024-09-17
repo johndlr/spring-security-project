@@ -1,6 +1,7 @@
 package com.juandlr.springsecurityproject.exception;
 
 import com.juandlr.springsecurityproject.dto.ErrorResponseDto;
+import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -33,51 +34,32 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponseDto> handleGlobalException(Exception exception,
-                                                                  WebRequest webRequest) {
-        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
-                webRequest.getDescription(false),
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                exception.getMessage(),
-                LocalDateTime.now()
-        );
-        return new ResponseEntity<>(errorResponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<ErrorResponseDto> handleGlobalException(Exception exception,WebRequest webRequest) {
+       return new ResponseEntity<>(errorResponseDtoGenerator(exception,webRequest), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponseDto> handleCustomerAlreadyExistsException(UserAlreadyExistsException exception,
-                                                                                 WebRequest webRequest){
-        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
-                webRequest.getDescription(false),
-                HttpStatus.BAD_REQUEST,
-                exception.getMessage(),
-                LocalDateTime.now()
-        );
-        return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorResponseDto> handleUserAlreadyExistsExceptionException(UserAlreadyExistsException exception,WebRequest webRequest){
+        return new ResponseEntity<>(errorResponseDtoGenerator(exception,webRequest), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(RoleNameNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handleCustomerAlreadyExistsException(RoleNameNotFoundException exception,
-                                                                                 WebRequest webRequest){
-        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
-                webRequest.getDescription(false),
-                HttpStatus.BAD_REQUEST,
-                exception.getMessage(),
-                LocalDateTime.now()
-        );
-        return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorResponseDto> handleRoleNameNotFoundExceptionException(RoleNameNotFoundException exception, WebRequest webRequest){
+        return new ResponseEntity<>(errorResponseDtoGenerator(exception,webRequest), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handleCustomerAlreadyExistsException(UserNotFoundException exception,
-                                                                                 WebRequest webRequest){
-        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
+    public ResponseEntity<ErrorResponseDto> handleUserNotFoundExceptionException(UserNotFoundException exception,WebRequest webRequest){
+        return new ResponseEntity<>(errorResponseDtoGenerator(exception,webRequest), HttpStatus.BAD_REQUEST);
+    }
+
+    private ErrorResponseDto errorResponseDtoGenerator(Exception exception, WebRequest webRequest){
+        return new ErrorResponseDto(
                 webRequest.getDescription(false),
                 HttpStatus.BAD_REQUEST,
                 exception.getMessage(),
                 LocalDateTime.now()
         );
-        return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
     }
 
 

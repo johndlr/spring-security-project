@@ -2,7 +2,7 @@ package com.juandlr.springsecurityproject.service.implementation;
 
 import com.juandlr.springsecurityproject.entity.ApplicationUser;
 import com.juandlr.springsecurityproject.repository.ApplicationUserRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-@AllArgsConstructor
-public class UserServiceDetailsImpl implements UserDetailsService {
+@RequiredArgsConstructor
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final ApplicationUserRepository userRepository;
 
@@ -19,6 +19,8 @@ public class UserServiceDetailsImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         ApplicationUser userFromDB = userRepository.findByUserName(username)
                 .orElseThrow(() -> new UsernameNotFoundException("The user with the given username: " + username +  " does not exists"));
-        return new CustomUserDetails(userFromDB);
+        return new UserDetailsImpl(userFromDB);
     }
+
+
 }

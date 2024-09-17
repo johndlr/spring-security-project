@@ -4,13 +4,13 @@ import com.juandlr.springsecurityproject.entity.Role;
 import com.juandlr.springsecurityproject.exception.RoleNameNotFoundException;
 import com.juandlr.springsecurityproject.repository.RoleRepository;
 import com.juandlr.springsecurityproject.service.RoleService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
