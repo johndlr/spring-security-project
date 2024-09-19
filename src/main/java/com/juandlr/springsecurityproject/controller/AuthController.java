@@ -30,7 +30,7 @@ public class AuthController {
     public ResponseEntity<ResponseDto> signUp(@RequestBody @Valid SignUpRequestDto signUpRequestDto){
         userService.singUpUser(signUpRequestDto);
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(HttpStatus.CREATED)
                 .body(new ResponseDto(HttpConstants.STATUS_201, HttpConstants.MESSAGE_201));
     }
 

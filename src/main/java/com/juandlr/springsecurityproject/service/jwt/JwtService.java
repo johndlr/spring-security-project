@@ -61,7 +61,7 @@ public class JwtService {
         return claims.getSubject();
     }
 
-    private Claims getClaimsFromToken(String token){
+    public Claims getClaimsFromToken(String token){
         try {
             return Jwts
                     .parser()
@@ -74,7 +74,7 @@ public class JwtService {
         }
     }
 
-    private boolean checkExpiration(Claims claims){
+    public boolean checkExpiration(Claims claims){
         Date expirationInformation = claims.getExpiration();
         return expirationInformation.before(new Date());
     }

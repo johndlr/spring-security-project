@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record SignUpRequestDto(@NotEmpty(message = "Username can not be a null or empty.")
-                               @Size(min = 5, max = 30, message = "The length of the name should be between 5 and 30.")
+                               @Size(min = 5, max = 30, message = "The length of the username should be between 5 and 30.")
                                String userName,
 
                                @NotEmpty(message = "Name can not be a null or empty.")
