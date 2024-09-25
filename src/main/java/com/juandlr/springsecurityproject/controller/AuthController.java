@@ -7,7 +7,6 @@ import com.juandlr.springsecurityproject.dto.ResponseDto;
 import com.juandlr.springsecurityproject.dto.SignUpRequestDto;
 import com.juandlr.springsecurityproject.service.ApplicationUserService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

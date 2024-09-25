@@ -1,6 +1,4 @@
 package com.juandlr.springsecurityproject.controller;
-
-import com.juandlr.springsecurityproject.constants.HttpConstants;
 import com.juandlr.springsecurityproject.dto.UserDto;
 import com.juandlr.springsecurityproject.service.ApplicationUserService;
 import jakarta.validation.constraints.NotEmpty;
