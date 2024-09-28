@@ -14,14 +14,9 @@
 <h4>Other endpoints to test the role system.</h4>
 <div><img src="https://github.com/user-attachments/assets/be4c0908-3ebf-45e1-8cd3-fcdd85543064"></div>
 
-
-
-
-
-
-
-
-
+<h4>Database schema.</h4>
+<div><img src="https://github.com/user-attachments/assets/8263cb35-a338-45d4-a43a-b27dfc281f6c"></div>
+<p>For the roles table, the nomenclature recommended by spring security was used, using the prefix ROLE_</p>
  
 <h2>💻 Built with</h2>
 
