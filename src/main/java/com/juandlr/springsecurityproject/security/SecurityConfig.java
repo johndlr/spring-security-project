@@ -48,6 +48,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST,"/api/auth/signup").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/auth/login").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/user").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(AbstractHttpConfigurer::disable)
