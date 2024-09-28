@@ -1,11 +1,14 @@
 package com.juandlr.springsecurityproject.controller;
 
 import com.juandlr.springsecurityproject.constants.HttpConstants;
-import com.juandlr.springsecurityproject.dto.LoginRequestDto;
-import com.juandlr.springsecurityproject.dto.LoginResponseDto;
-import com.juandlr.springsecurityproject.dto.ResponseDto;
-import com.juandlr.springsecurityproject.dto.SignUpRequestDto;
+import com.juandlr.springsecurityproject.dto.*;
 import com.juandlr.springsecurityproject.service.ApplicationUserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(
+        name = "CRUD REST APIs for users authentication",
+        description = "CRUD REST APIs to signup and login to the system"
+)
 @RestController
 @RequestMapping(path = "/api/auth", produces = {MediaType.APPLICATION_JSON_VALUE})
 @Validated
@@ -25,6 +32,24 @@ public class AuthController {
 
     private final ApplicationUserService userService;
 
+    @Operation(
+            summary = "SignUp REST API",
+            description = "REST API to create new user"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "HTTP Status CREATED"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    }
+    )
     @PostMapping("/signup")
     public ResponseEntity<ResponseDto> signUp(@RequestBody @Valid SignUpRequestDto signUpRequestDto){
         userService.singUpUser(signUpRequestDto);
@@ -33,6 +58,24 @@ public class AuthController {
                 .body(new ResponseDto(HttpConstants.STATUS_201, HttpConstants.MESSAGE_201));
     }
 
+    @Operation(
+            summary = "SignUp REST API",
+            description = "REST API to create new user"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    }
+    )
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody @Valid LoginRequestDto loginRequestDto){
         String jwt = userService.loginUser(loginRequestDto);
