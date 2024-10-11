@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Set;
+
 @Tag(
         name = "CRUD REST API for testing authentication and authorization",
         description = "Testing JWT-based authentication and Role-based authorization"
@@ -56,6 +58,30 @@ public class MainController {
                                              @RequestParam String userName){
         UserDto userDto = userService.fetchUserInformation(userName);
         return ResponseEntity.status(HttpStatus.OK).body(userDto);
+    }
+
+    @Operation(
+            summary = "Get Organization Codes",
+            description = "REST API to get fictitious codes from the organization"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    }
+    )
+    @GetMapping("/codes")
+    public ResponseEntity<Set<String>> getCodes(){
+        Set<String> setOfCodes = userService.generateCodes();
+        return ResponseEntity.status(HttpStatus.OK).body(setOfCodes);
     }
 
 

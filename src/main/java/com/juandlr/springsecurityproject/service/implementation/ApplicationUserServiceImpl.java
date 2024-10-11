@@ -21,7 +21,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -66,6 +69,22 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
         ApplicationUser userFromDB = userRepository.findByUserName(userName)
                 .orElseThrow(() -> new UserNotFoundException("The user with the given username: " + userName + " does not exists"));
         return UserMapper.mapToUserDto(new UserDto(), userFromDB);
+    }
+
+    @Override
+    public Set<String> generateCodes() {
+        Set<String> setOfCodes = new HashSet<>();
+        int i = 0;
+        try {
+            while (i < 5){
+                String organizationCode = "Aur" + UUID.randomUUID().toString().substring(0,3).toUpperCase();
+                setOfCodes.add(organizationCode);
+                i++;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return setOfCodes;
     }
 
 
