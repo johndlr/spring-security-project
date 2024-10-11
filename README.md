@@ -1,6 +1,8 @@
 <h1 align="center" id="title">Spring Security and JWT 🪪</h1>
 
-<p id="description">A basic stateless application was developed, using Spring Security to handle authentication and role-based authorization. In addition, the concept of a JWT token was included as a means of authentication through the different endpoints of the application. An extra branch is added that represents the application that was deployed to **Azure**.</p>
+<p id="description">A basic stateless application was developed, using Spring Security to handle authentication and role-based authorization. In addition, the concept of a JWT token was included as a means of authentication through the different endpoints of the application.</p>
+
+An extra branch azure-deploy is added that represents the application that was deployed to **Azure**.
 
 <h2>🧐 Features</h2>
 <div><img src="https://github.com/user-attachments/assets/0b448dc6-4b08-439d-80ac-c62b45f86f65" alt="project-screenshot"></div>
