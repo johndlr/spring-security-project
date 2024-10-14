@@ -5,9 +5,9 @@ spring:
   application:
     name: spring-security-project
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: ${APPSETTING_DB_URL}
+    username: ${APPSETTING_DB_USERNAME}
+    password: ${APPSETTING_DB_PASSWORD}
   jpa:
     show-sql: true 
     hibernate:
