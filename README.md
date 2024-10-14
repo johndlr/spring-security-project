@@ -22,15 +22,15 @@ An extra branch azure-deploy is added that represents the application that was d
 
 ### Deployment to Azure App Services
 
-The application was deployed to **Azure App Services** using **Docker Compose File**, and some changes were made to the application, specifically the implementation of JIB library and Docker. The images were deployed to Docker Hub to be used by Azure App Service along with the Docker Compose file, which declares two services: first the MySQL database and second the application.
+The application was deployed to **Azure App Services** using **GitHub Actions** and for the data base we use **Azure MySQL**.
 
-Below are some screenshots of the implementation in Azure:
+Some screeenshots of the deployment:
 
-![Screenshot 2024-10-11 154716](https://github.com/user-attachments/assets/287cdf42-fd43-47d5-878a-0742c90785d1)
+![Screenshot 2024-10-14 153655](https://github.com/user-attachments/assets/415afb64-0a58-4222-9e86-52b888a9719f)
 
-Log from Azure App Service indicating a successful pull from docker hub:
+![Screenshot 2024-10-14 153710](https://github.com/user-attachments/assets/e8760854-7256-4280-b39e-71a4ee4ecfce)
 
-![Screenshot 2024-10-11 154859](https://github.com/user-attachments/assets/01486808-245d-498d-bf2c-0cf959febb2a)
+![Screenshot 2024-10-14 153749](https://github.com/user-attachments/assets/86cd7e78-e0a8-40da-a3f8-553dafbac38f)
 
  
 <h2>💻 Built with</h2>
