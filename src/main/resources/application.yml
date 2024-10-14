@@ -5,9 +5,7 @@ spring:
   application:
     name: spring-security-project
   datasource:
-    url: ${APPSETTING_DB_URL}
-    username: ${APPSETTING_DB_USERNAME}
-    password: ${APPSETTING_DB_PASSWORD}
+    url: ${MYSQLCONNSTR_DATASOURCE}    
   jpa:
     show-sql: true
   sql:
