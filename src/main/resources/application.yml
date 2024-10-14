@@ -5,9 +5,9 @@ spring:
   application:
     name: spring-security-project
   datasource:
-    url: ${AZURE_MYSQL_CONNECTIONSTRING}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://api-rest-jwt-server.mysql.database.azure.com:3306/users_db?useSSL=true
+    username: juandlr
+    password: azure@12345
   jpa:
     show-sql: true
     hibernate:
