@@ -51,4 +51,4 @@ jobs:
           app-name: 'authapplication'
           slot-name: 'Production'
           package: '*.jar'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FC63DAE8F9FE40A8898FB7C271202A09 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_74C3F58A401144CA95A4736DE693A7AC }}
