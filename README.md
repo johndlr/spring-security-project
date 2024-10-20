@@ -1,14 +1,12 @@
-<h1 align="center" id="title">Spring Security and JWT 🪪</h1>
+# Spring Security and JWT
 
-<p id="description">A basic stateless application was developed, using Spring Security to handle authentication and role-based authorization. In addition, the concept of a JWT token was included as a means of authentication through the different endpoints of the application.</p>
+A crud stateless application was developed, using Spring Security to handle authentication and role-based authorization. In addition, the concept of a JWT token was included as a means of authentication through the different endpoints of the application. Spring Security was integrated with JJWT to implement a token-based authentication system with role-based access control. An extra branch azure-deploy is added that represents the application that was deployed to **Azure**.
 
-An extra branch azure-deploy is added that represents the application that was deployed to **Azure**.
-
-<h2>🧐 Features</h2>
+## Features
+#### Two endpoints were created for user registration and login to the application. The latter generates a JWT token that allows access, according to the user's role, to other endpoints that are protected and require authentication
+#### Below are the endpoints and a screenshot of the token generated after successful registration.
 <div><img src="https://github.com/user-attachments/assets/0b448dc6-4b08-439d-80ac-c62b45f86f65" alt="project-screenshot"></div>
 <br/>
-<h3>Here're some of the project's best features:</h3>
-<h4>Two endpoints were created for user registration and login to the application. The latter generates a JWT token that allows access, according to the user's role, to other endpoints that are protected and require authentication 🔐</h4>
 <div><img src="https://github.com/user-attachments/assets/ebc064bd-72c9-4457-89d9-2724410ade30" alt="project-screenshot"></div>
 <br/>
 <div><img src="https://github.com/user-attachments/assets/abad436a-59dc-4a04-979a-82498c805d1f" alt="project-screenshot"></div>
