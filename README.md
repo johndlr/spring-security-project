@@ -8,14 +8,10 @@ An extra branch azure-deploy is added that represents the application that was d
 <div><img src="https://github.com/user-attachments/assets/0b448dc6-4b08-439d-80ac-c62b45f86f65" alt="project-screenshot"></div>
 <br/>
 <h3>Here're some of the project's best features:</h3>
-<h4>Two endpoints were created to signup and login in the application. In case of a successful login the jwt token is received 🔐</h4>
-<div><img src="https://github.com/user-attachments/assets/161b5dfa-1f95-4c23-8f0b-57e8d24b5bce" alt="project-screenshot"></div>
+<h4>Two endpoints were created for user registration and login to the application. The latter generates a JWT token that allows access, according to the user's role, to other endpoints that are protected and require authentication 🔐</h4>
+<div><img src="https://github.com/user-attachments/assets/ebc064bd-72c9-4457-89d9-2724410ade30" alt="project-screenshot"></div>
 <br/>
 <div><img src="https://github.com/user-attachments/assets/abad436a-59dc-4a04-979a-82498c805d1f" alt="project-screenshot"></div>
-
-<h4>Other endpoints to test the role system.</h4>
-<div><img src="https://github.com/user-attachments/assets/be4c0908-3ebf-45e1-8cd3-fcdd85543064"></div>
-
 <h4>Database schema.</h4>
 <div><img src="https://github.com/user-attachments/assets/8263cb35-a338-45d4-a43a-b27dfc281f6c"></div>
 <p>For the roles table, the nomenclature recommended by spring security was used, using the prefix ROLE_</p>
