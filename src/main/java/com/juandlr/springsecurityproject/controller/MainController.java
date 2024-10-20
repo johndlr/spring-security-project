@@ -8,17 +8,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
@@ -84,6 +83,54 @@ public class MainController {
         return ResponseEntity.status(HttpStatus.OK).body(setOfCodes);
     }
 
+    @Operation(
+            summary = "Delete user",
+            description = "REST API to delete a user"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    }
+    )
+    @DeleteMapping("/user")
+    public ResponseEntity<String> deleteUser(
+            @NotEmpty(message = "Username can not be a null or empty.")
+            @Size(min = 5, max = 30, message = "The length of the name should be between 5 and 30.") String userName){
+        userService.deleteUser(userName);
+        return ResponseEntity.status(HttpStatus.OK.value()).body("The user was successfully deleted");
+    }
 
+    @Operation(
+            summary = "Update user",
+            description = "REST API to update a user"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    }
+    )
+    @PutMapping("/user")
+    public ResponseEntity<String> updateUser(@RequestBody @Valid UserDto userDto){
+        userService.updateUser(userDto);
+        return ResponseEntity.status(HttpStatus.OK.value()).body("The user was successfully updated");
+    }
 
 }

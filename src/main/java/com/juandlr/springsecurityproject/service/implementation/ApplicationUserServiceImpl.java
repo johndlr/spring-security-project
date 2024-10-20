@@ -87,5 +87,20 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
         return setOfCodes;
     }
 
+    @Override
+    public void deleteUser(String userName) {
+        ApplicationUser userFromDb = userRepository.findByUserName(userName)
+               .orElseThrow(()-> new UserNotFoundException("User with the given email does not exists"));
+        userRepository.delete(userFromDb);
+    }
+
+    @Override
+    public void updateUser(UserDto userDto) {
+        ApplicationUser userFromDb = userRepository.findByUserName(userDto.getUserName())
+                .orElseThrow(()-> new UserNotFoundException("User with the given username does not exists"));
+        ApplicationUser updatedUser = UserMapper.mapToUser(userDto, userFromDb);
+        userRepository.save(updatedUser);
+    }
+
 
 }

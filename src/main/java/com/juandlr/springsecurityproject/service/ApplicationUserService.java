@@ -15,4 +15,8 @@ public interface ApplicationUserService {
     UserDto fetchUserInformation(String userName);
 
     Set<String> generateCodes();
+
+    void deleteUser(String userName);
+
+    void updateUser(UserDto userDto);
 }
