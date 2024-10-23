@@ -30,4 +30,7 @@ public record SignUpRequestDto(@Schema(description = "Represents the username")
                                @NotEmpty(message = "Password can not be a null or empty.")
                                @Size(min = 8, max = 30, message = "The length of the password should be between 8 and 30.")
                                String password) {
+
+
+
 }

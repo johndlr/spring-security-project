@@ -1,23 +1,30 @@
 package com.juandlr.springsecurityproject.service;
 
+import com.juandlr.springsecurityproject.dto.LoginRequestDto;
 import com.juandlr.springsecurityproject.dto.SignUpRequestDto;
 import com.juandlr.springsecurityproject.dto.UserDto;
 import com.juandlr.springsecurityproject.entity.ApplicationUser;
 import com.juandlr.springsecurityproject.entity.Role;
+import com.juandlr.springsecurityproject.exception.UserAlreadyExistsException;
 import com.juandlr.springsecurityproject.exception.UserNotFoundException;
-import com.juandlr.springsecurityproject.mapper.UserMapper;
 import com.juandlr.springsecurityproject.repository.ApplicationUserRepository;
 import com.juandlr.springsecurityproject.service.implementation.ApplicationUserServiceImpl;
+import com.juandlr.springsecurityproject.service.jwt.JwtService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,6 +43,12 @@ public class ApplicationUserServiceImplTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    @Mock
+    private AuthenticationManager authenticationManager;
+
+    @Mock
+    private JwtService jwtService;
+
     @InjectMocks
     private ApplicationUserServiceImpl underTest;
 
@@ -45,11 +58,28 @@ public class ApplicationUserServiceImplTest {
 
     private Role role;
 
+    private SignUpRequestDto signUpRequestDto;
+
+    private LoginRequestDto loginRequestDto;
+
+    private Authentication authentication, authenticatedResponse ;
+
     @BeforeEach
     void setUp() {
         role = new Role(1L, "ROLE_USER");
         user = new ApplicationUser(10L, "martinADD", "Martin", "Addams", "maddams@example.com", "password12345", role);
         userOptional = Optional.of(user);
+        signUpRequestDto = new SignUpRequestDto("martinADD","Martin", "Addams", "addams45@example.com", "martin@123456");
+        loginRequestDto = new LoginRequestDto("martinADD", "martin@123456");
+        authentication = UsernamePasswordAuthenticationToken.unauthenticated(
+                loginRequestDto.userName(),
+                loginRequestDto.password()
+        );
+        authenticatedResponse = new UsernamePasswordAuthenticationToken(
+                loginRequestDto.userName(),
+                loginRequestDto.password(),
+                List.of(new SimpleGrantedAuthority("ROLE_USER"))
+        );
     }
 
     @Test
@@ -101,7 +131,6 @@ public class ApplicationUserServiceImplTest {
 
     @Test
     void shouldSignUpUser(){
-        SignUpRequestDto signUpRequestDto = new SignUpRequestDto("martinADD","Martin", "Addams", "addams45@example.com", "martin@123456");
         when(userRepository.findByUserName(signUpRequestDto.userName())).thenReturn(Optional.empty());
         when(roleService.generateDefaultRoleName("ROLE_USER")).thenReturn(role);
         when(passwordEncoder.encode(signUpRequestDto.password())).thenReturn("{bcrypt}$2a$10$oz1yp4FCF/9JvnDRR7Be2uyjN5EsSUxdrBpmSBIipAcvu57HVohby");
@@ -118,6 +147,34 @@ public class ApplicationUserServiceImplTest {
         assertThat(savedUser.getRole().getRoleName()).isEqualTo("ROLE_USER");
         assertThat(savedUser.getRole().getRoleId()).isEqualTo(1L);
     }
+
+    @Test
+    void shouldThrowUserAlreadyExistsExceptionWhenUserExistInSignUpUser(){
+        when(userRepository.findByUserName(signUpRequestDto.userName())).thenReturn(Optional.of(user));
+        assertThrows(UserAlreadyExistsException.class, () -> underTest.signUpUser(signUpRequestDto));
+        verify(userRepository).findByUserName(signUpRequestDto.userName());
+        verify(passwordEncoder, never()).encode(signUpRequestDto.password());
+    }
+
+    @Test
+    void shouldReturnJwtWhenLoginIsSuccessful(){
+        when(authenticationManager.authenticate(authentication)).thenReturn(authenticatedResponse);
+        when(jwtService.jwtTokenGenerator(authenticatedResponse)).thenReturn("mockJwtToken");
+        String jwtToken = underTest.loginUser(loginRequestDto);
+        verify(authenticationManager).authenticate(authentication);
+        verify(jwtService).jwtTokenGenerator(authenticatedResponse);
+        assertThat("mockJwtToken").isEqualTo(jwtToken);
+    }
+
+    @Test
+    void shouldThrowBadCredentialsExceptionWhenLoginFails() {
+        when(authenticationManager.authenticate(any(Authentication.class))).thenThrow(new BadCredentialsException("Invalid credentials"));
+        assertThrows(BadCredentialsException.class, () -> underTest.loginUser(loginRequestDto));
+        verify(authenticationManager).authenticate(any(Authentication.class));
+        verify(jwtService, never()).jwtTokenGenerator(any(Authentication.class));
+    }
+
+
 
 
 

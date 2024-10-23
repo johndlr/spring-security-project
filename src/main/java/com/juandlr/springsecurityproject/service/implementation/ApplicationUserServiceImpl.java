@@ -42,11 +42,11 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
 
     @Override
     public void signUpUser(SignUpRequestDto signUpRequestDto) {
-        String hashedPassword = passwordEncoder.encode(signUpRequestDto.password());
         Optional<ApplicationUser> optionalApplicationUser = userRepository.findByUserName(signUpRequestDto.userName());
         if (optionalApplicationUser.isPresent()){
             throw new UserAlreadyExistsException("User with the given username " + signUpRequestDto.userName() + " already exists");
         }
+        String hashedPassword = passwordEncoder.encode(signUpRequestDto.password());
         ApplicationUser userToPersist= SignUpMapper.mapToApplicationUser(new ApplicationUser(), signUpRequestDto, hashedPassword);
         userToPersist.setRole(roleService.generateDefaultRoleName("ROLE_USER"));
         userRepository.save(userToPersist);
