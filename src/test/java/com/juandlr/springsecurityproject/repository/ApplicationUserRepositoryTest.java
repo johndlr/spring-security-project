@@ -15,10 +15,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ApplicationUserRepositoryTest {
 
     @Autowired
-    ApplicationUserRepository underTest;
+    private ApplicationUserRepository underTest;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Test
     void shouldReturnUserWhenfindByUserName(){
