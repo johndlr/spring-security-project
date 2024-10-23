@@ -6,7 +6,7 @@ import com.juandlr.springsecurityproject.dto.UserDto;
 import com.juandlr.springsecurityproject.entity.ApplicationUser;
 import com.juandlr.springsecurityproject.exception.UserAlreadyExistsException;
 import com.juandlr.springsecurityproject.exception.UserNotFoundException;
-import com.juandlr.springsecurityproject.mapper.SingUpMapper;
+import com.juandlr.springsecurityproject.mapper.SignUpMapper;
 import com.juandlr.springsecurityproject.mapper.UserMapper;
 import com.juandlr.springsecurityproject.repository.ApplicationUserRepository;
 import com.juandlr.springsecurityproject.service.ApplicationUserService;
@@ -41,13 +41,13 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
     private final JwtService jwtService;
 
     @Override
-    public void singUpUser(SignUpRequestDto signUpRequestDto) {
+    public void signUpUser(SignUpRequestDto signUpRequestDto) {
         String hashedPassword = passwordEncoder.encode(signUpRequestDto.password());
         Optional<ApplicationUser> optionalApplicationUser = userRepository.findByUserName(signUpRequestDto.userName());
         if (optionalApplicationUser.isPresent()){
             throw new UserAlreadyExistsException("User with the given username " + signUpRequestDto.userName() + " already exists");
         }
-        ApplicationUser userToPersist= SingUpMapper.mapToApplicationUser(new ApplicationUser(), signUpRequestDto, hashedPassword);
+        ApplicationUser userToPersist= SignUpMapper.mapToApplicationUser(new ApplicationUser(), signUpRequestDto, hashedPassword);
         userToPersist.setRole(roleService.generateDefaultRoleName("ROLE_USER"));
         userRepository.save(userToPersist);
     }
@@ -90,7 +90,7 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
     @Override
     public void deleteUser(String userName) {
         ApplicationUser userFromDb = userRepository.findByUserName(userName)
-               .orElseThrow(()-> new UserNotFoundException("User with the given email does not exists"));
+               .orElseThrow(()-> new UserNotFoundException("User with the given userName does not exists"));
         userRepository.delete(userFromDb);
     }
 

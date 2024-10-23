@@ -3,7 +3,7 @@ package com.juandlr.springsecurityproject.mapper;
 import com.juandlr.springsecurityproject.dto.SignUpRequestDto;
 import com.juandlr.springsecurityproject.entity.ApplicationUser;
 
-public class SingUpMapper {
+public class SignUpMapper {
 
     public static ApplicationUser mapToApplicationUser(ApplicationUser applicationUser, SignUpRequestDto signUpRequestDto, String hashedPassword){
         applicationUser.setUserName(signUpRequestDto.userName());

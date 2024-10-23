@@ -8,7 +8,7 @@ import java.util.Set;
 
 
 public interface ApplicationUserService {
-    void singUpUser(SignUpRequestDto signUpRequestDto);
+    void signUpUser(SignUpRequestDto signUpRequestDto);
 
     String loginUser(LoginRequestDto loginRequestDto);
 

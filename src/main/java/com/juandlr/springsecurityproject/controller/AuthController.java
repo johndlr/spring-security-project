@@ -52,7 +52,7 @@ public class AuthController {
     )
     @PostMapping("/signup")
     public ResponseEntity<ResponseDto> signUp(@RequestBody @Valid SignUpRequestDto signUpRequestDto){
-        userService.singUpUser(signUpRequestDto);
+        userService.signUpUser(signUpRequestDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ResponseDto(HttpConstants.STATUS_201, HttpConstants.MESSAGE_201));
