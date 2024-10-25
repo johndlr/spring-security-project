@@ -39,17 +39,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponseDto> handleUserAlreadyExistsExceptionException(UserAlreadyExistsException exception,WebRequest webRequest){
+    public ResponseEntity<ErrorResponseDto> handleUserAlreadyExistsException(UserAlreadyExistsException exception,WebRequest webRequest){
         return new ResponseEntity<>(errorResponseDtoGenerator(exception,webRequest), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(RoleNameNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handleRoleNameNotFoundExceptionException(RoleNameNotFoundException exception, WebRequest webRequest){
+    public ResponseEntity<ErrorResponseDto> handleRoleNameNotFoundException(RoleNameNotFoundException exception, WebRequest webRequest){
         return new ResponseEntity<>(errorResponseDtoGenerator(exception,webRequest), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handleUserNotFoundExceptionException(UserNotFoundException exception,WebRequest webRequest){
+    public ResponseEntity<ErrorResponseDto> handleUserNotFoundException(UserNotFoundException exception,WebRequest webRequest){
+        return new ResponseEntity<>(errorResponseDtoGenerator(exception,webRequest), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserNameIsUniqueException.class)
+    public ResponseEntity<ErrorResponseDto> handleUserNameIsUniqueException(UserNameIsUniqueException exception,WebRequest webRequest){
         return new ResponseEntity<>(errorResponseDtoGenerator(exception,webRequest), HttpStatus.BAD_REQUEST);
     }
 

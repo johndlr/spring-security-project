@@ -42,8 +42,8 @@ public class AuthController {
                     description = "HTTP Status CREATED"
             ),
             @ApiResponse(
-                    responseCode = "500",
-                    description = "HTTP Status Internal Server Error",
+                    responseCode = "400",
+                    description = "User already exists",
                     content = @Content(
                             schema = @Schema(implementation = ErrorResponseDto.class)
                     )
@@ -59,8 +59,8 @@ public class AuthController {
     }
 
     @Operation(
-            summary = "SignUp REST API",
-            description = "REST API to create new user"
+            summary = "Login REST API",
+            description = "REST API for user login"
     )
     @ApiResponses({
             @ApiResponse(
@@ -69,7 +69,7 @@ public class AuthController {
             ),
             @ApiResponse(
                     responseCode = "500",
-                    description = "HTTP Status Internal Server Error",
+                    description = "User does not exists",
                     content = @Content(
                             schema = @Schema(implementation = ErrorResponseDto.class)
                     )
@@ -79,7 +79,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody @Valid LoginRequestDto loginRequestDto){
         String jwt = userService.loginUser(loginRequestDto);
-        return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDto(jwt));
+        return ResponseEntity.status(HttpStatus.OK.value()).body(new LoginResponseDto(jwt));
 
     }
 

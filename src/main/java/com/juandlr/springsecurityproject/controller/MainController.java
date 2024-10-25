@@ -1,5 +1,8 @@
 package com.juandlr.springsecurityproject.controller;
+import com.juandlr.springsecurityproject.constants.HttpConstants;
 import com.juandlr.springsecurityproject.dto.ErrorResponseDto;
+import com.juandlr.springsecurityproject.dto.ResponseDto;
+import com.juandlr.springsecurityproject.dto.UpdatePasswordRequestDto;
 import com.juandlr.springsecurityproject.dto.UserDto;
 import com.juandlr.springsecurityproject.service.ApplicationUserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -7,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -29,28 +33,18 @@ import java.util.Set;
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
 @RequiredArgsConstructor
 @Validated
+@SecurityRequirement(name = "bearer-key")
 public class MainController {
 
     private final ApplicationUserService userService;
 
-    @Operation(
-            summary = "Fetch User REST API",
-            description = "REST API to fetch user information"
-    )
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "HTTP Status OK"
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "HTTP Status Internal Server Error",
-                    content = @Content(
-                            schema = @Schema(implementation = ErrorResponseDto.class)
-                    )
-            )
-    }
-    )
+    @Operation(summary = "Fetch user information", description = "Fetches information of a user by username")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully fetched user information",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid user information supplied",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
     @GetMapping("/user")
     public ResponseEntity<UserDto> fetchUser(@NotEmpty(message = "Username can not be a null or empty.")
                                              @Size(min = 5, max = 30, message = "The length of the name should be between 5 and 30.")
@@ -59,78 +53,51 @@ public class MainController {
         return ResponseEntity.status(HttpStatus.OK).body(userDto);
     }
 
-    @Operation(
-            summary = "Get Organization Codes",
-            description = "REST API to get fictitious codes from the organization"
-    )
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "HTTP Status OK"
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "HTTP Status Internal Server Error",
-                    content = @Content(
-                            schema = @Schema(implementation = ErrorResponseDto.class)
-                    )
-            )
-    }
-    )
-    @GetMapping("/codes")
-    public ResponseEntity<Set<String>> getCodes(){
-        Set<String> setOfCodes = userService.generateCodes();
-        return ResponseEntity.status(HttpStatus.OK).body(setOfCodes);
-    }
-
-    @Operation(
-            summary = "Delete user",
-            description = "REST API to delete a user"
-    )
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "HTTP Status OK"
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "HTTP Status Internal Server Error",
-                    content = @Content(
-                            schema = @Schema(implementation = ErrorResponseDto.class)
-                    )
-            )
-    }
-    )
+    @Operation(summary = "Delete a user", description = "Deletes a user information")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully deleted user information",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid user information supplied",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
     @DeleteMapping("/user")
-    public ResponseEntity<String> deleteUser(
+    public ResponseEntity<ResponseDto> deleteUser(
             @NotEmpty(message = "Username can not be a null or empty.")
             @Size(min = 5, max = 30, message = "The length of the name should be between 5 and 30.") String userName){
         userService.deleteUser(userName);
-        return ResponseEntity.status(HttpStatus.OK.value()).body("The user was successfully deleted");
+        return ResponseEntity
+                .status(HttpStatus.OK.value())
+                .body(new ResponseDto(HttpConstants.STATUS_200, HttpConstants.MESSAGE_200_DELETE));
     }
 
-    @Operation(
-            summary = "Update user",
-            description = "REST API to update a user"
-    )
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "HTTP Status OK"
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "HTTP Status Internal Server Error",
-                    content = @Content(
-                            schema = @Schema(implementation = ErrorResponseDto.class)
-                    )
-            )
-    }
-    )
+    @Operation(summary = "Update user information", description = "Updates information of a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully updated user information",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid user information supplied",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
     @PutMapping("/user")
-    public ResponseEntity<String> updateUser(@RequestBody @Valid UserDto userDto){
+    public ResponseEntity<ResponseDto> updateUser(@RequestBody @Valid UserDto userDto){
         userService.updateUser(userDto);
-        return ResponseEntity.status(HttpStatus.OK.value()).body("The user was successfully updated");
+        return ResponseEntity
+                .status(HttpStatus.OK.value())
+                .body(new ResponseDto(HttpConstants.STATUS_200, HttpConstants.MESSAGE_200_UPDATE));
+    }
+
+    @Operation(summary = "Update user password information", description = "Updates information of a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully updated user password information",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid user information supplied",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @PutMapping("/user/password")
+    public ResponseEntity<ResponseDto> updatePassword(@Valid @RequestBody UpdatePasswordRequestDto updatePasswordRequestDto) {
+        userService.updatePassword(updatePasswordRequestDto);
+        return ResponseEntity
+                .status(HttpStatus.OK.value())
+                .body(new ResponseDto(HttpConstants.STATUS_200, HttpConstants.MESSAGE_200_UPDATE));
     }
 
 }
