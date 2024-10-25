@@ -43,3 +43,5 @@ Technologies used in the project:
 *   Spring Security
 *   Azure
 *   Docker
+*   MySQL
+*   Swagger
