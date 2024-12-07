@@ -1,0 +1,161 @@
+{
+	"info": {
+		"_postman_id": "1118cfc4-2393-46d9-8b28-9fca75e65372",
+		"name": "Spring Security JWT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "33953400"
+	},
+	"item": [
+		{
+			"name": "Register User",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"lazyboy24\",\r\n    \"name\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"jondoe@example.com\",\r\n    \"password\": \"mypass1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/auth/signup"
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"lazyboy24\",\r\n    \"password\": \"mypass4567\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/auth/login"
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb20uanVhbmRsciIsInN1YiI6InJlaTEyIiwicm9sZSI6IlJPTEVfQURNSU4iLCJpYXQiOjE3MzM1NDUwNTEsImV4cCI6MTczMzU0NTY1MX0.YT5oy_9hvMc4RqrG1cHjrMe9ByiEY0OHmUfbJlYdLb8"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/user?userName=rei12",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user"
+					],
+					"query": [
+						{
+							"key": "userName",
+							"value": "rei12"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb20uanVhbmRsciIsInN1YiI6InJlaTEyIiwicm9sZSI6IlJPTEVfQURNSU4iLCJpYXQiOjE3MzM1NDUwNTEsImV4cCI6MTczMzU0NTY1MX0.YT5oy_9hvMc4RqrG1cHjrMe9ByiEY0OHmUfbJlYdLb8"
+					}
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"lazyboy24\",\r\n    \"name\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"jondoe@example.com\"    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/user"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Password User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb20uanVhbmRsciIsInN1YiI6InJlaTEyIiwicm9sZSI6IlJPTEVfQURNSU4iLCJpYXQiOjE3MzM1NDUwNTEsImV4cCI6MTczMzU0NTY1MX0.YT5oy_9hvMc4RqrG1cHjrMe9ByiEY0OHmUfbJlYdLb8"
+					}
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"lazyboy24\",\r\n    \"newPassword\": \"mypass4567\"   \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/user/password"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb20uanVhbmRsciIsInN1YiI6InJlaTEyIiwicm9sZSI6IlJPTEVfQURNSU4iLCJpYXQiOjE3MzM1NDUwNTEsImV4cCI6MTczMzU0NTY1MX0.YT5oy_9hvMc4RqrG1cHjrMe9ByiEY0OHmUfbJlYdLb8"
+					}
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/user?userName=lazyboy24",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user"
+					],
+					"query": [
+						{
+							"key": "userName",
+							"value": "lazyboy24"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
